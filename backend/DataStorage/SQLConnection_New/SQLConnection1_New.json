@@ -1,0 +1,56 @@
+{
+    "UniqueUserID": "ABC12345",
+    "Driver": "SQL Server",
+    "Server": "LAPTOP-AT45JF46\\NEWMSSQLSERVER",
+    "Database": "Sales_DB",
+    "Connection": [
+        {
+            "ConnectionID": "ABB123",
+            "Table": "Orders",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a Order Table"
+        },
+        {
+            "ConnectionID": "2",
+            "Table": "Products",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a Products Table"
+        },
+        {
+            "ConnectionID": "3",
+            "Table": "Customers",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a customer table"
+        },
+        {
+            "ConnectionID": "NUM123",
+            "Table": "Employees",
+            "ConnectionStatus": "Test",
+            "Description": ""
+        },
+        {
+            "ConnectionID": "YjX990",
+            "Table": "PaymentMethods",
+            "ConnectionStatus": "Test",
+            "Description": ""
+        },
+        {
+            "ConnectionID": "UDv529",
+            "Table": "Shipments",
+            "ConnectionStatus": "Test",
+            "Description": ""
+        },
+        {
+            "ConnectionID": "kdC756",
+            "Table": "Categories",
+            "ConnectionStatus": "Test",
+            "Description": ""
+        },
+        {
+            "ConnectionID": "Xzc699",
+            "Table": "OrderDetails",
+            "ConnectionStatus": "Test",
+            "Description": ""
+        }
+    ]
+}

@@ -1,0 +1,29 @@
+{
+    "UniqueUserID" : "DEF67890",
+    "Connection":[
+        {
+            "ConnectionID": "1",
+            "Driver": "Test",
+            "Server": "Test",
+            "Database": "Test",
+            "ConnectionStatus": "Test",
+            "Description": "Test"
+        },
+        {
+            "ConnectionID": "2",
+            "Driver": "Test",
+            "Server": "Test",
+            "Database": "Test",
+            "ConnectionStatus": "Test",
+            "Description": "Test"
+        },
+        {
+            "ConnectionID": "3",
+            "Driver": "Test",
+            "Server": "Test",
+            "Database": "Test",
+            "ConnectionStatus": "Test",
+            "Description": "Test"
+        }
+    ]
+}

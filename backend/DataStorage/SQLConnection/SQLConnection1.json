@@ -1,0 +1,32 @@
+{
+    "UniqueUserID": "ABC12345",
+    "Connection": [
+        {
+            "ConnectionID": "ABB123",
+            "Driver": "SQL Server",
+            "Server": "LAPTOP-AT45JF46\\NEWMSSQLSERVER",
+            "Database": "Sales_DB",
+            "Table": "Orders",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a Order Table"
+        },
+        {
+            "ConnectionID": "2",
+            "Driver": "SQL Server",
+            "Server": "LAPTOP-AT45JF46\\NEWMSSQLSERVER",
+            "Database": "Sales_DB",
+            "Table": "Products",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a Products Table"
+        },
+        {
+            "ConnectionID": "3",
+            "Driver": "SQL Server",
+            "Server": "LAPTOP-AT45JF46\\NEWMSSQLSERVER",
+            "Database": "Sales_DB",
+            "Table": "Customers",
+            "ConnectionStatus": "Connected",
+            "Description": "This is a customer table"
+        }
+    ]
+}
