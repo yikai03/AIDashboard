@@ -5,6 +5,7 @@ import os
 import json
 from fastapi.middleware.cors import CORSMiddleware
 import random
+import AI
 
 app = FastAPI()
 
@@ -37,7 +38,9 @@ class UserCredentials(BaseModel):
 
 @app.post("/login")
 async def login(user: UserCredentials):
-    folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\DataStorage\\UserCredential"
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\UserCredential"
+    folderPath = os.path.join(cwd, relativePath)
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
@@ -54,7 +57,9 @@ async def login(user: UserCredentials):
 def findUserSQLConnectionData():
     print("UniqueUserID: " + UniqueUserID)
     #Temporary local storage of JSON file 
-    folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\DataStorage\\SQLConnection_New" 
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
@@ -65,7 +70,9 @@ def findUserSQLConnectionData():
     return None
 
 def findUserSpecificSQLConnectionData(id: str):
-    folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\DataStorage\\SQLConnection_New"
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
@@ -130,7 +137,9 @@ def randomID():
 }
 
 def storeAllUserSQLConnectionData(allTableNames, info):
-    folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\DataStorage\\SQLConnection_New"
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
@@ -159,7 +168,9 @@ def storeAllUserSQLConnectionData(allTableNames, info):
 
 #Add/Edit Description
 def addDescription(id: str, description: str):
-    folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\DataStorage\\SQLConnection"
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
@@ -263,5 +274,15 @@ async def addTableDescription(connection: ConnectionDescription):
     
 
 #____________________AI CHATBOT____________________
+class ChatbotMessage(BaseModel):
+    message: str
+
+@app.post("/chatbot")
+async def messageWithAI(chatbot: ChatbotMessage):
+    response = AI.getUserMessage(UniqueUserID, chatbot.message)
+    return response
+
+
+
 
 

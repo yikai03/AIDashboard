@@ -90,8 +90,40 @@ function ExampleComponent() {
 # print(table_name)
 
 import AI
-AI.newChat()
-AI.chatWithLlama3("DF4tvqqIQh", "Hello, how are you?")
+import pandas as pd
+import os
+import pandas as pd
+# AI.newChat()
+# AI.getUserMessage("RbQAHQe9No", "Give me the bar chart of total orders based on different product")
+
+# Get the current working directory
+cwd = os.getcwd()
+
+# Construct the relative path to the Orders.csv file
+relative_path = "backend\\TableStorage\\Orders.csv"
+
+# Combine the current working directory and the relative path
+file_path = os.path.join(cwd, relative_path)
+
+# Read the Orders.csv file
+df = pd.read_csv(file_path)
+
+print(df)
+
+# folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\TableStorage"
+# files = os.listdir(folderPath)
+# fileNames = [file for file in files if os.path.isfile(os.path.join(folderPath, file))]
+# dataFrame = [pd.read_csv(f"{folderPath}\\{fileName}") for fileName in fileNames]
+
+# dataTypeInDataFrame = [df.dtypes for df in dataFrame]
+
+# print("Files::::::", files)
+
+# print("File Names::::::", fileNames)
+
+# print("Data Type in Data Frame::::::", dataTypeInDataFrame)
+
+
 
 
 
