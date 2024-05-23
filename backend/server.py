@@ -103,6 +103,19 @@ def findUserSpecificSQLConnectionData(id: str):
                             return connection_info
     return None
 
+
+def getUserHistoryMessageWithAI():
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\AISessionHistory"
+    folderPath = os.path.join(cwd, relativePath)
+    for filename in os.listdir(folderPath):
+        if filename.endswith(".json"):
+            with open(os.path.join(folderPath, filename), "r") as file:
+                userInfo = json.load(file)                
+                if userInfo["id"] == UniqueUserID:
+                    print(userInfo["history"])
+                    return userInfo["history"]
+    return None
 #____________________DATA STORAGE____________________ #Connection bridge to JSON file (Future in data storage)
 class ConnectionInfo(BaseModel):
     Driver: str
@@ -238,7 +251,9 @@ async def messageWithAI(chatbot: ChatbotMessage):
     print(response)
     return response
 
-
-
-
+@app.get("/chatbot")
+async def getChatbot():
+    history = getUserHistoryMessageWithAI()
+    print(history)
+    return history
 

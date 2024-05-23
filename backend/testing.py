@@ -12,7 +12,11 @@ import pyodbc
 import pandas as pd
 import os
 import glob
+import server
 
+history = server.getUserHistoryMessageWithAI("ABC12345")
+
+print(history)
 # connection = pyodbc.connect(
 #     'DRIVER={SQL Server};'
 #     'SERVER=LAPTOP-AT45JF46\\NEWMSSQLSERVER;'
@@ -104,18 +108,18 @@ import pandas as pd
 # AI.getUserMessage("RbQAHQe9No", "Give me the bar chart of total orders based on different product")
 
 # Get the current working directory
-cwd = os.getcwd()
+# cwd = os.getcwd()
 
-# Construct the relative path to the Orders.csv file
-relative_path = "TableStorage"
-relative_path2 = "*.csv"
+# # Construct the relative path to the Orders.csv file
+# relative_path = "TableStorage"
+# relative_path2 = "*.csv"
 
-# Combine the current working directory and the relative path
-file_path = os.path.join(cwd, relative_path)
-file_path2 = os.path.join(file_path, relative_path2)
-# Read the Orders.csv file
+# # Combine the current working directory and the relative path
+# file_path = os.path.join(cwd, relative_path)
+# file_path2 = os.path.join(file_path, relative_path2)
+# # Read the Orders.csv file
 
-print(file_path2)
+# print(file_path2)
 
 # folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\TableStorage"
 # files = os.listdir(folderPath)
@@ -131,15 +135,27 @@ print(file_path2)
 # print("Data Type in Data Frame::::::", dataTypeInDataFrame)
 
 
+import matplotlib.pyplot as plt
+import pandas as pd
 
+# cwd = os.getcwd()
+# relativePath = "TableStorage"
+# folderPath = os.path.join(cwd, relativePath)
 
+# # Load the Orders.csv file into a pandas DataFrame
+# orders_df  = pd.read_csv(f"{folderPath}\\Orders.csv")
 
+# # Group the orders by CustomerID and sum the TotalAmount
+# order_sum_by_customer  = orders_df.groupby(['CustomerID'])['TotalAmount'].sum().reset_index()
 
+# # Create a bar chart of the sum of total amount by customer
+# plt.figure(figsize=(10,6))
+# plt.bar(order_sum_by_customer['CustomerID'], order_sum_by_customer['TotalAmount'])
+# plt.xlabel('Customer ID')
+# plt.ylabel('Total Order Amount')
+# plt.title('Total Orders Based on Customer')
+# plt.xticks(order_sum_by_customer['CustomerID'])
 
-
-
-
-
-
-
-
+# # Save the chart as an image file
+# plt.savefig('total_orders_by_customer.png', dpi=300)
+# plt.show()
