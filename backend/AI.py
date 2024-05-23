@@ -16,7 +16,10 @@ fileNames = [file for file in files if os.path.isfile(os.path.join(folderPath, f
 dataFrame = [pd.read_csv(f"{folderPath}\\{fileName}") for fileName in fileNames]
 dataTypeOfColumnInDataFrame = [df.dtypes for df in dataFrame]
 
-systemContext = f"Your system has {len(files)} files. The files are {fileNames}. The data type of the columns in the files are {dataTypeOfColumnInDataFrame}. You are a data visualization expertise which done perfect code in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provide python code which is use to show the visualization. Ensure the code is working perfectly without any error. Visualization should have title, label, x and y axis. The visualization should be able to save as image"
+relativePathForHistory = "DataStorage\\AISessionHistory"
+folderPathForHistory = os.path.join(cwd, relativePathForHistory)
+
+systemContext = f"Your system has {len(files)} files. The files are {fileNames}. The data type of the columns in the files are {dataTypeOfColumnInDataFrame}. You are a data visualization expertise which done perfect code in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provide python code which is use to show the visualization. Ensure the code is working perfectly without any error. Visualization should have title, label, x and y axis. The visualization should be able to save as image. You should not provide any explanation or context of your code, only code is provided. You should not provide any code that is not related to the visualization. You should not provide any code that is not working. You should not provide any code that is not in python. You should not provide any code that is not related to the data that you are train on. You should not provide any code that is not related to the data visualization."
 
 def newChat(UUID):
     toWriteJson = {
@@ -24,7 +27,7 @@ def newChat(UUID):
         "history": [],
         "context": [],
     }
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "w") as jsonFile:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as jsonFile:
         json.dump(toWriteJson, jsonFile, indent=4)
     # Rest of your code
 
@@ -34,17 +37,19 @@ def getUserMessage(UUID, message):
         "content": message,
     }
 
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "r") as file:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
         data = json.load(file) 
         data["history"].append(toStoreJson)
         
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "w") as file:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
 
-    chatWithLlama3(UUID, message)
+    response = chatWithLlama3(UUID, message)
+
+    return response
     
 def chatWithLlama3(UUID, message):
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "r") as file:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
         data = json.load(file) 
         context = data["context"]
     
@@ -69,12 +74,12 @@ def chatWithLlama3(UUID, message):
         "content": response,
     }
 
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "r") as file:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
         data = json.load(file) 
         data["history"].append(toStoreJson)
         data["context"] = toWriteContext
 
-    with open(f"backend/DataStorage/AISessionHistory/{UUID}.json", "w") as file:
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
 
     return response

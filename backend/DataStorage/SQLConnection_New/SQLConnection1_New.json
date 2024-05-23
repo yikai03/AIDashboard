@@ -1,7 +1,7 @@
 {
     "UniqueUserID": "ABC12345",
     "Driver": "SQL Server",
-    "Server": "LAPTOP-AT45JF46\\NEWMSSQLSERVER",
+    "Server": "DESKTOP-OP58T1G",
     "Database": "Sales_DB",
     "Connection": [
         {

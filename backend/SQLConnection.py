@@ -7,6 +7,9 @@ unless want to use multiple table in different database, then need to use multi 
 '''
 
 import pyodbc
+import glob
+import os
+import pandas as pd
 
 def getCursor(driver, server, database):
     try:
@@ -69,5 +72,25 @@ def getTableName(Driver, Server, Database):
     tableNames = [item[0] for item in data]
     info = [Driver, Server, Database]
     return tableNames, info
+
+def storeSQLInStorage(allTableName, info):
+    connection = pyodbc.connect(
+        f'DRIVER={info[0]};'
+        f'SERVER={info[1]};'
+        f'DATABASE={info[2]};'
+        'Trusted_Connection=yes;'
+    )
+    cwd2 = os.getcwd()
+    relativePath2 = "TableStorage"
+    folderPath2 = os.path.join(cwd2, relativePath2)
+    allFile = "*.csv"
+    for filename in glob.glob(os.path.join(folderPath2, allFile)):
+        os.remove(filename)
+
+    for tableName in allTableName:
+      df = pd.read_sql(f"Select * From {tableName}", connection)
+
+      print(df)
+      df.to_csv(os.path.join(folderPath2, f"{tableName}.csv"), index=False)
 
 

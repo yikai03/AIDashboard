@@ -32,6 +32,13 @@ import glob
 
 #   df.to_csv(f"C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\TableStorage\\{tableName}.csv", index=False)
 
+# cwd2 = os.getcwd()
+# relativePath2 = "TableStorage"
+# folderPath2 = os.path.join(cwd2, relativePath2)
+# allFile = "*.csv"
+# for filename in glob.glob(os.path.join(folderPath2, allFile)):
+#     os.remove(filename)
+
 
 '''
 import React from "react";
@@ -89,7 +96,7 @@ function ExampleComponent() {
 # for table_name in table_names:
 # print(table_name)
 
-import AI
+# import AI
 import pandas as pd
 import os
 import pandas as pd
@@ -100,15 +107,15 @@ import pandas as pd
 cwd = os.getcwd()
 
 # Construct the relative path to the Orders.csv file
-relative_path = "backend\\TableStorage\\Orders.csv"
+relative_path = "TableStorage"
+relative_path2 = "*.csv"
 
 # Combine the current working directory and the relative path
 file_path = os.path.join(cwd, relative_path)
-
+file_path2 = os.path.join(file_path, relative_path2)
 # Read the Orders.csv file
-df = pd.read_csv(file_path)
 
-print(df)
+print(file_path2)
 
 # folderPath = "C:\\Users\\YC PUAH\\OneDrive - Asia Pacific University\\L2S2\\Internship\\Tomta\\AIDashboard\\backend\\TableStorage"
 # files = os.listdir(folderPath)

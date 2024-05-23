@@ -1,8 +1,9 @@
 import React from 'react'
+import Chat from '../components/AI/Chat'
 
 const AI = () => {
   return (
-    <div>AI</div>
+    <Chat />
   )
 }
 
