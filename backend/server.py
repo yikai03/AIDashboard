@@ -154,7 +154,8 @@ def storeAllUserSQLConnectionData(allTableNames, info):
                                 "ConnectionID": randomID(),
                                 "Table": name,
                                 "ConnectionStatus": "Test",
-                                "Description": ""
+                                "Description": "",
+                                "ToTrain": "No"
                             }
                             userInfo["Connection"].append(connection)
                             print(connection)
@@ -257,3 +258,12 @@ async def getChatbot():
     print(history)
     return history
 
+#User can select different dataset to train the AI
+#Steps:
+#1. User navigate to AI Page
+#2. User click on Train AI button
+#3. System will retrieve all the table from the database including their name and selection status
+#4. User can select the table they want to train the AI
+#5. System will read user selection and update the JSON file
+#6. AI will know what table to train using the selection status in the JSON file
+#7. System should be starting a new AI session since the user has selected a new table

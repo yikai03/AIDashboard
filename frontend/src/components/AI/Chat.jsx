@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useRef} from 'react'
 import TypingAnimation from './TypingAnimation'
+import { GiHollowCat } from "react-icons/gi";
 
 const Chat = () => {
     const [inputValue, setInputValue] = useState('')
@@ -72,7 +73,7 @@ const Chat = () => {
     <>
     <div className="container mx-auto max-w">
       <div className="flex flex-col h-screen">
-        <h1 className="bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text text-center py-3 font-bold text-6xl">ChatGPT</h1>
+        <h1 className="bg-gradient-to-r from-blue-500 to-purple-500 text-transparent bg-clip-text text-center py-3 font-bold text-6xl">TTGPT</h1>
         <div className="flex-grow p-6 overflow-auto" ref={chatContainerRef}>
             {isGetting ? 
             (
@@ -84,17 +85,18 @@ const Chat = () => {
                         <div key={index} className={`flex ${
                         message.type === 'user' ? 'justify-end' : 'justify-start'
                         }`}>
+                            {message.type === 'AI' && <GiHollowCat className="mr-2 w-8 h-8 text-black bg-white rounded-full" />}
                             <div className={`${
                             message.type === 'user' ? 'bg-purple-500' : 'bg-gray-800'
                             } rounded-lg p-4 text-white max-w-sm`}>
-                            {message.message}
+                                {message.message}
                             </div>
                         </div>
                     ))
                     }
                     {
                     isLoading &&
-                    <div key={chatLog.length} className="flex justify-start">
+                    <div key={chatLog.length} className="flex justify-start">   
                         <div className="bg-gray-800 rounded-lg p-4 text-white max-w-sm">
                             <TypingAnimation />
                         </div>

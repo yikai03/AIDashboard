@@ -14,7 +14,7 @@ const MenuList = () => {
     const navigate = useNavigate();
 
   return (
-    <Menu theme='dark' mode='inline' className='h-screen mt-8 flex flex-col gap-4 text-base relative'>
+    <Menu theme='dark' mode='inline' className='mt-8 flex flex-col gap-4 text-base relative'>
 
         <Menu.Item key="DataIntegration" icon={<DatabaseOutlined />} onClick={() => navigate("DataIntegration")}>
             Data Integration Interface

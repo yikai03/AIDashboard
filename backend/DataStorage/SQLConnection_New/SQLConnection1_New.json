@@ -8,49 +8,57 @@
             "ConnectionID": "ABB123",
             "Table": "Orders",
             "ConnectionStatus": "Connected",
-            "Description": "This is a Order Table"
+            "Description": "This is a Order Table",
+            "ToTrain": "Yes"
         },
         {
             "ConnectionID": "2",
             "Table": "Products",
             "ConnectionStatus": "Connected",
-            "Description": "This is a Products Table"
+            "Description": "This is a Products Table",
+            "ToTrain": "Yes"        
         },
         {
             "ConnectionID": "3",
             "Table": "Customers",
             "ConnectionStatus": "Connected",
-            "Description": "This is a customer table"
+            "Description": "This is a customer table",
+            "ToTrain": "Yes"
         },
         {
             "ConnectionID": "NUM123",
             "Table": "Employees",
             "ConnectionStatus": "Test",
-            "Description": ""
+            "Description": "",
+            "ToTrain": "No"
         },
         {
             "ConnectionID": "YjX990",
             "Table": "PaymentMethods",
             "ConnectionStatus": "Test",
-            "Description": ""
+            "Description": "",
+            "ToTrain": "No"            
         },
         {
             "ConnectionID": "UDv529",
             "Table": "Shipments",
             "ConnectionStatus": "Test",
-            "Description": ""
+            "Description": "",
+            "ToTrain": "No"            
         },
         {
             "ConnectionID": "kdC756",
             "Table": "Categories",
             "ConnectionStatus": "Test",
-            "Description": ""
+            "Description": "",
+            "ToTrain": "Yes"
         },
         {
             "ConnectionID": "Xzc699",
             "Table": "OrderDetails",
             "ConnectionStatus": "Test",
-            "Description": ""
+            "Description": "",
+            "ToTrain": "No"
         }
     ]
 }
