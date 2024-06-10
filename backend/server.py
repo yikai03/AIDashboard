@@ -103,6 +103,24 @@ def findUserSpecificSQLConnectionData(id: str):
                             return connection_info
     return None
 
+def getUserTrainingTableData():
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
+    for filename in os.listdir(folderPath):
+        if filename.endswith(".json"):
+            with open(os.path.join(folderPath, filename), "r") as file:
+                userInfo = json.load(file)
+                if userInfo["UniqueUserID"] == UniqueUserID:
+                    toTrainTableArray = []
+                    for connection in userInfo["Connection"]:
+                        toTrainTable = {
+                            "Table": connection["Table"],
+                            "ToTrain" : connection["ToTrain"]
+                        }
+                        toTrainTableArray.append(toTrainTable)
+                    return toTrainTableArray
+    return None
 
 def getUserHistoryMessageWithAI():
     cwd = os.getcwd()
@@ -115,6 +133,21 @@ def getUserHistoryMessageWithAI():
                 if userInfo["id"] == UniqueUserID:
                     print(userInfo["history"])
                     return userInfo["history"]
+    return None
+
+def refreshSQLConnectionData():
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
+    for filename in os.listdir(folderPath):
+        if filename.endswith(".json"):
+            with open(os.path.join(folderPath, filename), "r") as file:
+                userInfo = json.load(file)
+                if userInfo["UniqueUserID"] == UniqueUserID:
+                    driver = str(userInfo["Driver"])
+                    server = str(userInfo["Server"])
+                    database = str(userInfo["Database"])
+                    return driver, server, database
     return None
 #____________________DATA STORAGE____________________ #Connection bridge to JSON file (Future in data storage)
 class ConnectionInfo(BaseModel):
@@ -140,28 +173,35 @@ def storeAllUserSQLConnectionData(allTableNames, info):
     for filename in os.listdir(folderPath):
         if filename.endswith(".json"):
             with open(os.path.join(folderPath, filename), "r") as file:
-                userInfo = json.load(file)                
+                userInfo = json.load(file)      
+
+                toStoreJson ={
+                    "UniqueUserID": UniqueUserID,
+                    "Driver": None,
+                    "Server": None,
+                    "Database": None,
+                    "Connection": []
+                }         
                 if userInfo["UniqueUserID"] == UniqueUserID:
-                    userInfo["Driver"] = info[0]
-                    userInfo["Server"] = info[1]
-                    userInfo["Database"] = info[2]
-                    tableNameInFile = [connection["Table"] for connection in userInfo["Connection"]]
+                    toStoreJson["Driver"] = info[0]
+                    toStoreJson["Server"] = info[1]
+                    toStoreJson["Database"] = info[2]
+                    # tableNameInFile = [connection["Table"] for connection in userInfo["Connection"]]
+                    # userInfo["Connection"] = []  # Empty the userInfo["Connection"] array first
                     for name in allTableNames:
-                        if name in tableNameInFile:
-                            continue
-                        else:
-                            connection = {
-                                "ConnectionID": randomID(),
-                                "Table": name,
-                                "ConnectionStatus": "Test",
-                                "Description": "",
-                                "ToTrain": "No"
-                            }
-                            userInfo["Connection"].append(connection)
-                            print(connection)
-                        print(userInfo)
+                        toStoreConnection = {
+                            "ConnectionID": randomID(),
+                            "Table": name,
+                            "ConnectionStatus": "Test",
+                            "Description": "",
+                            "ToTrain": "Yes"
+                        } 
+                        toStoreJson["Connection"].append(toStoreConnection)
+                        print(toStoreConnection)
+                        print('\n\n\n final json :')
+                        print(toStoreJson)
                     with open(os.path.join(folderPath, filename), "w") as file:
-                        json.dump(userInfo, file, indent=4)
+                        json.dump(toStoreJson, file, indent=4)
                     break
 
 #Add/Edit Description
@@ -180,7 +220,6 @@ def addDescription(id: str, description: str):
                             with open(os.path.join(folderPath, filename), "w") as file:
                                 json.dump(userInfo, file, indent=4)
                             break
-
 
 #____________________SQL CONNECTION____________________
 
@@ -240,6 +279,15 @@ async def addTableDescription(connection: ConnectionDescription):
     except Exception as e:
         return {"status": "failed"}
     
+@app.get("/sql-refresh")
+async def sqlRefresh():
+    driver, server, database = refreshSQLConnectionData()
+    tableNames, info = SQLConnection.getTableName(driver, server, database)
+    storeAllUserSQLConnectionData(tableNames, info) 
+    SQLConnection.storeSQLInStorage(tableNames, info)
+
+    sqlConnectionData = findUserSQLConnectionData()
+    return sqlConnectionData
 
 #____________________AI CHATBOT____________________
 class ChatbotMessage(BaseModel):
@@ -267,3 +315,9 @@ async def getChatbot():
 #5. System will read user selection and update the JSON file
 #6. AI will know what table to train using the selection status in the JSON file
 #7. System should be starting a new AI session since the user has selected a new table
+
+@app.get("/ai-train")
+async def getTrainingTableList():
+    trainingTable = getUserTrainingTableData()
+    print(trainingTable)
+    return trainingTable

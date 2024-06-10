@@ -19,7 +19,7 @@ const MenuList = () => {
         <Menu.Item key="DataIntegration" icon={<DatabaseOutlined />} onClick={() => navigate("DataIntegration")}>
             Data Integration Interface
         </Menu.Item>
-        <Menu.Item key="AI" icon={<OpenAIOutlined />} onClick={() => navigate("AI")}>
+        <Menu.Item key="AI" icon={<OpenAIOutlined />} onClick={() => navigate("AI")} >
             AI Query Facilitation Interface
         </Menu.Item>    
         <Menu.Item key="PredictiveAnalysis" icon={<LineChartOutlined />} onClick={() => navigate("PredictiveAnalysis")}>

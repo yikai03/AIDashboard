@@ -30,11 +30,11 @@ const SideBarMenu = () => {
 
   return (
       <Layout>
-          <Sider collapsed={collapsed} collapsible trigger={null} className='text-white text-xl'> 
+          <Sider collapsed={collapsed} collapsible trigger={null} className='text-white text-xl h-screen'> 
             <Logo />
             <MenuList />
           </Sider>
-          <Layout>
+          <Layout className='bg-gradient-to-r from-gray-300 to-white'> {/*Change here for whole system color*/} 
               <Button type='default' className="toggle absolute ml-2 mt-2" onClick={toggleCollapsed} icon={collapsed ? <MenuUnfoldOutlined /> : <MenuFoldOutlined />} />
                 <Routes>
                   <Route index element={<HomePage />} />
@@ -43,6 +43,7 @@ const SideBarMenu = () => {
                   <Route path='/predictiveanalysis' element={<PredictiveAnalysis />} />
                   <Route path='/userinteraction' element={<UserInteraction />} />
                   <Route path='/usermanagement' element={<UserManagement />} />
+
                 </Routes> 
           </Layout>
       </Layout>

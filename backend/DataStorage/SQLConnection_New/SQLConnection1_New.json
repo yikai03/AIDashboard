@@ -5,60 +5,67 @@
     "Database": "Sales_DB",
     "Connection": [
         {
-            "ConnectionID": "ABB123",
-            "Table": "Orders",
-            "ConnectionStatus": "Connected",
-            "Description": "This is a Order Table",
-            "ToTrain": "Yes"
-        },
-        {
-            "ConnectionID": "2",
-            "Table": "Products",
-            "ConnectionStatus": "Connected",
-            "Description": "This is a Products Table",
-            "ToTrain": "Yes"        
-        },
-        {
-            "ConnectionID": "3",
-            "Table": "Customers",
-            "ConnectionStatus": "Connected",
-            "Description": "This is a customer table",
-            "ToTrain": "Yes"
-        },
-        {
-            "ConnectionID": "NUM123",
-            "Table": "Employees",
-            "ConnectionStatus": "Test",
-            "Description": "",
-            "ToTrain": "No"
-        },
-        {
-            "ConnectionID": "YjX990",
-            "Table": "PaymentMethods",
-            "ConnectionStatus": "Test",
-            "Description": "",
-            "ToTrain": "No"            
-        },
-        {
-            "ConnectionID": "UDv529",
-            "Table": "Shipments",
-            "ConnectionStatus": "Test",
-            "Description": "",
-            "ToTrain": "No"            
-        },
-        {
-            "ConnectionID": "kdC756",
+            "ConnectionID": "yFn531",
             "Table": "Categories",
             "ConnectionStatus": "Test",
             "Description": "",
             "ToTrain": "Yes"
         },
         {
-            "ConnectionID": "Xzc699",
+            "ConnectionID": "cMo050",
+            "Table": "Customers",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "Vqk854",
+            "Table": "Employees",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "oef070",
+            "Table": "Orders",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "ilw797",
+            "Table": "Products",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "Msc271",
             "Table": "OrderDetails",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "No"
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "Rmk844",
+            "Table": "PaymentMethods",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "aXV181",
+            "Table": "Shipments",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
+        },
+        {
+            "ConnectionID": "iKk838",
+            "Table": "Locations",
+            "ConnectionStatus": "Test",
+            "Description": "",
+            "ToTrain": "Yes"
         }
     ]
 }

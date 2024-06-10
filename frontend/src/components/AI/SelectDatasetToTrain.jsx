@@ -1,6 +1,7 @@
-import React from 'react'
+import React, {useState} from 'react'
+import { LuSettings2 } from "react-icons/lu";
 
-const SelectDatasetToTrain = () => {
+const SelectDatasetToTrain = ({className}) => {
     const [showSelectTrainDataset, setShowSelectTrainDataset] = useState(true)
 
     const openSelectTrainDataset = () => {
@@ -12,7 +13,9 @@ const SelectDatasetToTrain = () => {
     }
     
   return (
-    <div>SelectDatasetToTrain</div>
+    <div>
+      <LuSettings2 className={className}/>
+    </div>
   )
 }
 

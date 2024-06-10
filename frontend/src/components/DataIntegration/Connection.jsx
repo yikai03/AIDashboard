@@ -1,11 +1,11 @@
 import React, {useEffect, useState} from 'react'
 import {TfiReload} from "react-icons/tfi"
-import { MdKeyboardArrowDown } from "react-icons/md";
+import { MdKeyboardArrowDown, MdKeyboardArrowUp } from "react-icons/md";
 import { LuSave } from "react-icons/lu";
 import Table from './Table'
 import {toast} from 'react-toastify'
 
-const Connection = ({connection}) => {
+const Connection = ({connection, opacity}) => {
     const [IsExpanded, setIsExpanded] = useState(false)
     const [IsReloaded, setIsReloaded] = useState(false)
     const [description, setDescription] = useState(connection.Description)
@@ -14,6 +14,7 @@ const Connection = ({connection}) => {
     const toggleExpand = () => {
         setIsExpanded(!IsExpanded)
         console.log("clicked")
+        {IsExpanded ? console.log("expanded") : console.log("not expanded")}
     }
 
     useEffect(() => {
@@ -74,38 +75,39 @@ const Connection = ({connection}) => {
         console.log("saved")
     }
 
+    //Await for desription (Done)
 
-    //Await for desription
+    //Await for passing SQL to get sample data (Done)
 
-    //Await for passing SQL to get sample data
-
-    //Await for connection status
+    //Await for connection status (Require to understand why need this)
 
     //Await for statistical analysis (if needed)
 
     //Await for manual select columns (if needed)
 
     return (
-        <div className='w-3/4 drop-shadow-xl bg-white border border-black rounded mt-1 mb-2 '>
+        <div className={opacity}>
+            <div className=' drop-shadow-xl overflow-hidden bg-white border-x-[0.5px] border-gray-400 rounded mt-1 mb-2 transition hover:-translate-y-1 ease-in-out duration-300'>
 
-            <div className='flex flex-row align-middle justify-between'>        
-                <div className='text-2xl ml-1 font-bold w-32'>{connection.Table}</div>
-                <div className='text-2xl font-bold w-24'>{connection.ConnectionStatus}</div>
+                <div className='flex justify-between'>        
+                    <div className='text-2xl ml-1 font-bold w-32'>{connection.Table}</div>
+                    {/* <div className='text-2xl font-bold w-24'>{connection.ConnectionStatus}</div> */}
 
-                <TfiReload className='text-2xl cursor-pointer self-center' onClick={() => toggleReload(connection.ConnectionID)}/>
-                <MdKeyboardArrowDown className="text-2xl self-center cursor-pointer" onClick={toggleExpand} />
+                    {/* <TfiReload className='text-2xl cursor-pointer self-center' onClick={() => toggleReload(connection.ConnectionID)}/> */}
+
+                    {IsExpanded ? <MdKeyboardArrowUp className="text-2xl self-center cursor-pointer" onClick={toggleExpand} /> : <MdKeyboardArrowDown className="text-2xl self-center cursor-pointer" onClick={toggleExpand} />}
+                </div>
+
+
+                <div className={`overflow-hidden transition-all ease-in-out duration-[500ms] ${IsExpanded ? " max-h-[500px] opacity-100" : "max-h-0 opacity-0"}`}>
+                    <div className='p-2'>
+                        <label htmlFor="description" className='overflow-hidden mr-2 text-1xl font-bold'>Description:</label>
+                        <input className='border border-black rounded w-96 ' id="description" name="description" value={description} onChange={(e) => setDescription(e.target.value)}></input>
+                        <LuSave className='cursor-pointer inline ml-2 text-2xl' onClick={() =>toggleSave(connection.ConnectionID)}/>
+                        <Table sampleData={sampleData}/>
+                    </div>
+                </div>
             </div>
-
-            {IsExpanded && (
-            <div className="p-2">
-                    <label htmlFor="description" className='mr-2 text-1xl font-bold'>Description:</label>
-                    <input className='border border-black rounded w-96' id="description" name="description" value={description} onChange={(e) => setDescription(e.target.value)}></input>
-                    <LuSave className='cursor-pointer inline ml-2 text-2xl' onClick={() =>toggleSave(connection.ConnectionID)}/>
-                    <Table sampleData={sampleData}/>
-
-            </div>
-            )}
-
         </div>
     )
 }

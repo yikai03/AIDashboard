@@ -21,6 +21,10 @@ folderPathForHistory = os.path.join(cwd, relativePathForHistory)
 
 systemContext = f"Your system has {len(files)} files. The files are {fileNames}. The data type of the columns in the files are {dataTypeOfColumnInDataFrame}. You are a data visualization expertise which done perfect code in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provide python code which is use to show the visualization.Ensure the code is working perfectly without any error. Visualization should have title, label, x and y axis. The visualization should be able to save as image. When reading the csv into pandas DataFrame, add {folderPath} as the path and followed by whatever csv file to let the user to be able to run the code. The path should be like {folderPath}\\\"the csv file suits with requirement\".You should not provide any explanation or context of your code, only code is provided. You should not provide any code that is not related to the visualization. You should not provide any code that is not working. You should not provide any code that is not in python. You should not provide any code that is not related to the data that you are train on. You should not provide any code that is not related to the data visualization."
 
+#Function that modify the system context
+
+
+
 def newChat(UUID):
     toWriteJson = {
         "id": UUID,

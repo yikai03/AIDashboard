@@ -1,9 +1,11 @@
 import React, {useState} from 'react'
+import { MdKeyboardArrowRight, MdKeyboardArrowDown } from "react-icons/md";
 
 const ConnectToDatabase = () => {
   const [driver, setDriver] = useState('')
   const [server, setServer] = useState('')
   const [database, setDatabase] = useState('')
+  const [isExpanded, setIsExpanded] = useState(false)
 
   const connect = async() => {
     const url = "http://localhost:8000/sql-connection"
@@ -29,16 +31,41 @@ const ConnectToDatabase = () => {
 
   return (
     <div className="flex flex-col w-3/4 items-center pb-2">
-      <h1 className="text-2xl pt-3">Connect to Database</h1>
-      <div className="flex flex-col pl-4 pr-4 pb-4 mt-4">
-        <label className="text-xl w-64">Driver</label>
-        <input type="text" className="border border-black p-2" value={driver} onChange={(e) => setDriver(e.target.value)} />
-        <label className="text-xl">Server</label>
-        <input type="text" className="border border-black p-2" value={server} onChange={(e) => setServer(e.target.value)} />
-        <label className="text-xl">Database</label>
-        <input type="text" className="border border-black p-2" value={database} onChange={(e) => setDatabase(e.target.value)} />
-        <button className="bg-blue-500 rounded text-white p-2 mt-2" onClick={connect}>Connect</button>
+      <button className=' text-gray-500 hover:text-black ' onClick={() => setIsExpanded(!isExpanded)}>
+
+        <h1 className={`text-2xl pt-3 flex items-center ${isExpanded ? 'text-black':''}`}>
+          {isExpanded ? <MdKeyboardArrowDown className='mt-1'/> : <MdKeyboardArrowRight className='mt-1' />}
+          Connect to Database 
+        </h1>
+      </button>
+
+      <div className={`overflow-hidden transition-all duration-[600ms] ease-in-out flex flex-col items-center ${isExpanded ? 'max-h-[500px] opacity-100' : 'max-h-0 opacity-0' }`}>
+        <div className="flex flex-col pb-4 mt-4">
+          <label className="text-xl w-64">Driver</label>
+          <input type="text" 
+          className="border border-black p-2 text-black focus:ring focus:outline-none focus:border-blue-400 focus:ring-blue-400"
+          placeholder='Example: SQL Server' 
+          value={driver} 
+          onChange={(e) => setDriver(e.target.value)} />
+
+          <label className="text-xl">Server</label>
+          <input type="text" 
+          className="border border-black p-2 text-black focus:ring focus:outline-none focus:border-blue-400 focus:ring-blue-400" 
+          placeholder='Example: DESKTOP-OP58T1G' 
+          value={server} 
+          onChange={(e) => setServer(e.target.value)} />
+
+          <label className="text-xl">Database</label>
+          <input type="text" 
+          className="border border-black p-2 text-black focus:ring focus:outline-none focus:border-blue-400 focus:ring-blue-400" 
+          placeholder='Example: Sales_DB' 
+          value={database} 
+          onChange={(e) => setDatabase(e.target.value)} />
+
+          <button className="bg-blue-500 rounded text-white p-2 mt-2 hover:bg-blue-600" onClick={connect}>Connect</button>
+        </div>
       </div>
+
     </div>
   )
 }
