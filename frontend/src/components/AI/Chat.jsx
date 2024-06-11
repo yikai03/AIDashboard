@@ -61,7 +61,7 @@ const Chat = () => {
                 throw new Error('Network response was not ok');
             }
 
-            setChatLog((prevChatLog) => [...prevChatLog, { type: 'AI', message: data}])
+            setChatLog((prevChatLog) => [...prevChatLog, { type: 'AI', message: data.encodedImage}])
             setIsLoading(false)
         }
         catch (error) {
@@ -90,7 +90,7 @@ const Chat = () => {
                             <div className={`${
                             message.type === 'user' ? 'bg-purple-500' : 'bg-gray-800'
                             } rounded-lg p-4 text-white max-w-sm`}>
-                                {message.message}
+                                {message.type === "user" ? message.message : <img src={`data:image/png;base64,${message.message}`}/>}
                             </div>
                         </div>
                     ))
@@ -107,9 +107,9 @@ const Chat = () => {
                 )
             }             
         </div>
+        <SelectDatasetToTrain className={"text-3xl pl-2 pt-2"}/>
         <form className="flex-none p-6" onSubmit={handleSubmit}>
             <div className="flex justify-center rounded-lg border border-gray-700 bg-gray-200">  
-                <SelectDatasetToTrain className={"text-3xl pl-2 pt-2"}/>
                 <input type="text" className="flex-grow px-4 py-2 bg-transparent text-black focus:outline-none" placeholder="Type your message..." value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
                 <button type="submit" className="bg-gradient-to-r from-blue-500 to-purple-500 rounded-lg px-4 py-2 text-white font-semibold focus:outline-none hover:from-blue-600 hover:to-purple-600 transition-colors duration-300">Send</button>
             </div>

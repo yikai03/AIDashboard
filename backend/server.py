@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import FastAPI
 from pydantic import BaseModel
 import SQLConnection
@@ -7,6 +8,7 @@ from fastapi.middleware.cors import CORSMiddleware
 import random
 import AI
 import glob
+import pandas as pd
 
 app = FastAPI()
 
@@ -221,6 +223,26 @@ def addDescription(id: str, description: str):
                                 json.dump(userInfo, file, indent=4)
                             break
 
+
+class TrainTable(BaseModel):
+    Table: str
+    ToTrain: str
+
+def updateTrainingTableData(table: TrainTable):
+    cwd = os.getcwd()
+    relativePath = "DataStorage\\SQLConnection_New"
+    folderPath = os.path.join(cwd, relativePath)
+    for filename in os.listdir(folderPath):
+        if filename.endswith(".json"):
+            with open(os.path.join(folderPath, filename), "r") as file:
+                userInfo = json.load(file)                
+                if userInfo["UniqueUserID"] == UniqueUserID:
+                    for i in range(0, len(userInfo["Connection"])):
+                        if userInfo["Connection"][i]["Table"] == table.Table:
+                            userInfo["Connection"][i]["ToTrain"] = table.ToTrain
+                            with open(os.path.join(folderPath, filename), "w") as file:
+                                json.dump(userInfo, file, indent=4)
+                            break
 #____________________SQL CONNECTION____________________
 
 #Get message to know if user successfully connect to database
@@ -295,10 +317,10 @@ class ChatbotMessage(BaseModel):
 
 @app.post("/chatbot")
 async def messageWithAI(chatbot: ChatbotMessage):
-    response = AI.getUserMessage(UniqueUserID, chatbot.message)
+    response, encodedImage = AI.getUserMessage(UniqueUserID, chatbot.message)
     print("_"*100)
     print(response)
-    return response
+    return response, encodedImage
 
 @app.get("/chatbot")
 async def getChatbot():
@@ -319,5 +341,34 @@ async def getChatbot():
 @app.get("/ai-train")
 async def getTrainingTableList():
     trainingTable = getUserTrainingTableData()
+    print("Giving:::::")
     print(trainingTable)
     return trainingTable
+
+@app.post("/ai-train")
+async def trainAI(tables : List[TrainTable]):
+    AI.newChat(UniqueUserID) #Start a new AI session for the user since the system prompts will be different
+    print("Getting:::::")
+    allTableName = []
+    for table in tables:
+        print("Table", table.Table, " is set to ", table.ToTrain)
+        updateTrainingTableData(table)
+        if table.ToTrain == "Yes":
+            allTableName.append(table.Table)
+
+    driver, server, database = refreshSQLConnectionData()
+    tableNames, info = SQLConnection.getTableName(driver, server, database)
+
+    print("Here are all the trainable table name", allTableName)
+    
+    SQLConnection.storeTrainingDataset(allTableName, info)
+
+    # for table in tables:
+    #     if table.ToTrain == "Yes":
+    #         print("Table", table.Table, " is set to ", table.ToTrain)
+    #         AI.trainAI(UniqueUserID, table.Table)
+    #         print("Training AI for ", table.Table)
+
+    #Should be having a session where the new system prompt is generated
+
+    return {"status": "Data received successfully"} if tables else {"status": "Data not received"}

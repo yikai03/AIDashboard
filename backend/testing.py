@@ -14,9 +14,9 @@ import os
 import glob
 import server
 
-history = server.getUserHistoryMessageWithAI("ABC12345")
+# history = server.getUserHistoryMessageWithAI("ABC12345")
 
-print(history)
+# print(history)
 # connection = pyodbc.connect(
 #     'DRIVER={SQL Server};'
 #     'SERVER=LAPTOP-AT45JF46\\NEWMSSQLSERVER;'

@@ -1,0 +1,23 @@
+@keyframes textColorAnimation {
+    0% {
+        color: gray;
+
+    }
+    100% {
+        color: black;
+        
+    }
+}
+
+.text-color-animation {
+    background: linear-gradient(to right, gray 50%, black 50%);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-size: 200% 100%;
+    transition: background-position 1s;    
+}
+
+.text-color-animation-hover:hover {
+    background-position: -100% 0%;
+}

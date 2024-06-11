@@ -5,67 +5,67 @@
     "Database": "Sales_DB",
     "Connection": [
         {
-            "ConnectionID": "yFn531",
+            "ConnectionID": "flz743",
             "Table": "Categories",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "cMo050",
+            "ConnectionID": "SJn120",
             "Table": "Customers",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "Vqk854",
+            "ConnectionID": "oDA609",
             "Table": "Employees",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "oef070",
+            "ConnectionID": "cDv090",
             "Table": "Orders",
             "ConnectionStatus": "Test",
             "Description": "",
             "ToTrain": "Yes"
         },
         {
-            "ConnectionID": "ilw797",
+            "ConnectionID": "DoE303",
             "Table": "Products",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "Msc271",
+            "ConnectionID": "YMm509",
             "Table": "OrderDetails",
             "ConnectionStatus": "Test",
             "Description": "",
             "ToTrain": "Yes"
         },
         {
-            "ConnectionID": "Rmk844",
+            "ConnectionID": "UzC784",
             "Table": "PaymentMethods",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "aXV181",
+            "ConnectionID": "QKr064",
             "Table": "Shipments",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         },
         {
-            "ConnectionID": "iKk838",
+            "ConnectionID": "oIe466",
             "Table": "Locations",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "Yes"
+            "ToTrain": "No"
         }
     ]
 }
