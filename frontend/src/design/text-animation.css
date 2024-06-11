@@ -1,23 +1,44 @@
-@keyframes textColorAnimation {
-    0% {
-        color: gray;
-
-    }
-    100% {
-        color: black;
-        
-    }
-}
-
 .text-color-animation {
+    position: relative;
+    display: inline-block;
     background: linear-gradient(to right, gray 50%, black 50%);
     -webkit-background-clip: text;
     background-clip: text;
     -webkit-text-fill-color: transparent;
     background-size: 200% 100%;
-    transition: background-position 1s;    
+    transition: background-position 1s;
+}
+
+.text-color-animation::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 2px;
+    background: black;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 1s;
 }
 
 .text-color-animation-hover:hover {
     background-position: -100% 0%;
+    border-bottom-color: black
+}
+
+.text-color-animation-hover:hover::after {
+    transform: scaleX(1);
+}
+
+.text-color-animation-clicked {
+    background-position: -100% 0%;
+    color: black;
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.text-color-animation-clicked::after {
+    transform: scaleX(1);
 }

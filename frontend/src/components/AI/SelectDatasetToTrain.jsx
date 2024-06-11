@@ -104,6 +104,7 @@ const SelectDatasetToTrain = ({className}) => {
                                       <input
                                           value={table.ToTrain}
                                           onChange={handleChange}
+                                          className='cursor-pointer'
                                           type="checkbox"
                                           onClick={table.ToTrain === "Yes" ? () => table.ToTrain = "No" : () => table.ToTrain = "Yes"}
                                           checked={table.ToTrain === "Yes"}

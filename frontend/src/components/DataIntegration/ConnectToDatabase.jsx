@@ -32,7 +32,7 @@ const ConnectToDatabase = () => {
 
   return (
     <div className="flex flex-col w-3/4 items-center pb-2">
-      <button className=' hover:underline text-color-animation text-color-animation-hover' onClick={() => setIsExpanded(!isExpanded)}>
+      <button className={` hover:underline text-color-animation text-color-animation-hover ${isExpanded ? 'text-color-animation-clicked':''}`} onClick={() => setIsExpanded(!isExpanded)}>
 
         <h1 className={`text-2xl pt-3 flex items-center ${isExpanded ? 'text-black':''}`}>
           {isExpanded ? <MdKeyboardArrowDown className='mt-1'/> : <MdKeyboardArrowRight className='mt-1' />}
