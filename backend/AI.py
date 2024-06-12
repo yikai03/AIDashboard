@@ -154,6 +154,3 @@ def chatWithLlama3(UUID, message):
 #Therefore, there should be having a user json file to store each python file name and their title
 #Sturcture of the json file:
 #{ "UniqueID": "123ABC","Visualization": [{"Visualization": "Title1", FileName:"oaijewf.py"}, {"Visualization": "Title2", FileName:"iuhgieaf.py"}]}
-
-
-# getUserMessage("ABC12345", "draw me a bar chart of total quantity based on product id in OrderDetails.csv")
