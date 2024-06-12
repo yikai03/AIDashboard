@@ -33,7 +33,8 @@ const Modal = () => {
                 return navigate('/dataintegration')
                 
             } else {
-                toast.error("Login failed");
+                toast.error("Login failed")
+                return navigate('/');
                 // Optionally handle login failure (e.g., show an error message)
             }
         } catch (error) {
