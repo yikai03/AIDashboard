@@ -1,17 +1,15 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-orders_df = pd.read_csv("C:\\Users\\Tomta\\Desktop\\AIDashboard\\aidashboard\\backend\\TableStorage\\Orders.csv")
+order_details_df = pd.read_csv("C:\\Users\\Tomta\\Desktop\\AIDashboard_2\\AIDashboard\\backend\\TrainingTable\\OrderDetails.csv")
 
-# Calculate the total order amount for each customer
-customer_orders = orders_df.groupby('CustomerID')['TotalAmount'].sum().reset_index(name='Total Order Amount')
+# Calculate total sales per product
+order_details_df['TotalSales'] = order_details_df['Quantity'] * order_details_df['UnitPrice']
+product_sales = order_details_df.groupby('ProductID')['TotalSales'].sum().reset_index()
 
-# Plot the total order amounts
-plt.figure(figsize=(10, 6))
-plt.bar(customer_orders['CustomerID'], customer_orders['Total Order Amount'], color='lightcoral')
-plt.xlabel('Customer ID')
-plt.ylabel('Total Order Amount')
-plt.title('Total Order Amount by Customer')
-plt.xticks(rotation=45)
-plt.tight_layout()
+# Create the pie chart
+plt.figure(figsize=(8, 8))
+plt.pie(product_sales['TotalSales'], labels=product_sales['ProductID'].astype(str), autopct='%1.1f%%', startangle=90)
+plt.title('Total Sales by Product')
+plt.axis('equal')  # Equal aspect ratio ensures that pie is drawn as a circle.
 plt.savefig('chart.png')
