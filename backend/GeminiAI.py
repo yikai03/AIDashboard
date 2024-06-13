@@ -157,7 +157,7 @@ def chatWithGemini(UUID, message):
         "input: draw me a bar chart of total orders based on different product",
         "output: ```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\norder_details_df = pd.read_csv(\"C:\\\\Users\\\\Tomta\\\\Desktop\\\\AIDashboard\\\\aidashboard\\\\backend\\\\TrainingTable\\\\OrderDetails.csv\")\n\n# Calculate total sales per product\norder_details_df['TotalSales'] = order_details_df['Quantity'] * order_details_df['UnitPrice']\nproduct_sales = order_details_df.groupby('ProductID')['TotalSales'].sum().reset_index()\n\n# Plot the total sales\nplt.figure(figsize=(10, 6))\nplt.bar(product_sales['ProductID'].astype(str), product_sales['TotalSales'], color='skyblue')\nplt.xlabel('Product ID')\nplt.ylabel('Total Sales')\nplt.title('Total Sales by Product')\nplt.xticks(rotation=45)\nplt.tight_layout()\nplt.savefig('chart.png')\n```",
     ]
-
+    
     # chat = model.start_chat(history=msgs)
 
     # response = chat.send_message(message)
@@ -198,4 +198,4 @@ def chatWithGemini(UUID, message):
 
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
-    return response, encodedImage
+    return result, encodedImage
