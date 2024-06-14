@@ -6,7 +6,7 @@ import os
 import json
 from fastapi.middleware.cors import CORSMiddleware
 import random
-import GeminiAI as AI
+import AI
 import glob
 import pandas as pd
 
