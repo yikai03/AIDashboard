@@ -1,15 +1,48 @@
-import base64
-import csv
-import time
-import ollama
-import pandas as pd
-import random
-import string
-import json
+from dotenv import load_dotenv
 import os
+import google.generativeai as genai
+import csv
+import pandas as pd
+import json
+import time
+import base64
 import TransformingResponse as tr
 
-#Train the model by changing the system prompt (NOT FINE TUNE)
+load_dotenv()
+
+GENAI_API_KEY = os.getenv('GENAI_API_KEY')
+
+genai.configure(api_key=GENAI_API_KEY)
+# response = model.generate_content("write me a story of a frontend developer in 200 words")
+# print(response)
+
+generation_config = {
+  "temperature": 1,
+  "top_p": 0.6,
+  "top_k": 1,
+  "max_output_tokens": 2000,
+}
+
+
+safety_settings = [
+  {
+    "category": "HARM_CATEGORY_HARASSMENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_HATE_SPEECH",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+  {
+    "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+    "threshold": "BLOCK_MEDIUM_AND_ABOVE"
+  },
+]
+
 cwd = os.getcwd()
 relativePathForHistory = "DataStorage\\AISessionHistory"
 folderPathForHistory = os.path.join(cwd, relativePathForHistory)
@@ -46,7 +79,7 @@ def getSystemPrompt():
     # print(arr)
 
     systemContext = f"""
-    1. You are a data visualization expertise which done perfect code for visualization in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provides code. Start the code by importing the necessary library. Then, read the csv file into pandas DataFrame. Group the data based on the requirement, save the visualization as image with a name of chart.png and show the image.
+    1. You are a data visualization expertise which done perfect code for visualization in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provides code. Start the code by importing the necessary library. Then, read the csv file into pandas DataFrame. Group the data based on the requirement, show the visualization, save the visualization as image with a name of chart.png and show the image.
     2. Your system has {len(files)} files. 
     3. The files are {fileNames}. 
     4. Each files have different columns. Here are the columns in each file. {arr} 
@@ -55,11 +88,14 @@ def getSystemPrompt():
     7. The visualization should be able to save as image. The image must be saved as a name of \"chart.png\". 
     8. When reading the csv into pandas DataFrame, add {folderPath} as the path and followed by whatever csv file to let the user to be able to run the code. The path should be like {folderPath}\\\"the csv file suits with requirement\".
     9. You should not provide any explanation or context of your code, only code is provided. You should not provide any code that is not related to the visualization. You should not provide any code that is not working. You should not provide any code that is not in python. You should not provide any code that is not related to the data that you are train on. You should not provide any code that is not related to the data visualization.
+    10. You should only use the csv file that are passed to you in this system instruction. You should not use any other csv file that are not in the system instruction.
     """
 
     return systemContext
 
-#Function that modify the system context
+
+########################################################
+
 
 def newChat(UUID):
     toWriteJson = {
@@ -84,14 +120,11 @@ def getUserMessage(UUID, message):
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
 
-    response, encodedImage = chatWithLlama3(UUID, message)
+    response, encodedImage = chatWithGemini(UUID, message)
 
     return response, encodedImage
     
-def chatWithLlama3(UUID, message):
-    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
-        data = json.load(file) 
-        context = data["context"]
+def chatWithGemini(UUID, message):
     
     # output = ollama.generate(
     #     model='llama3',
@@ -101,8 +134,15 @@ def chatWithLlama3(UUID, message):
     #     context= context,  
     # )
 
+    model = genai.GenerativeModel(
+        model_name="gemini-1.5-flash",
+        system_instruction=getSystemPrompt(),
+        safety_settings=safety_settings,
+        generation_config=generation_config
+    )
+
     msgs=[
-        {"role": "system", "content": getSystemPrompt()},
+        # {"role": "system", "content": getSystemPrompt()},
         {"role": "user", "content": "draw me a bar chart of total orders based on customer id"},
         {"role": "assistant", "content": "```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\norders_df = pd.read_csv(\"C:\\\\Users\\\\Tomta\\\\Desktop\\\\AIDashboard\\\\aidashboard\\\\backend\\\\TrainingTable\\\\Orders.csv\")\ntotal_orders = orders_df.groupby('CustomerID')['OrderID'].count().reset_index(name='Total Orders')\n\nplt.bar(total_orders['CustomerID'], total_orders['Total Orders'])\nplt.xlabel('Customer ID')\nplt.ylabel('Total Orders')\nplt.title('Total Orders by Customer ID')\nplt.savefig('chart.png')\n```"},
         {"role": "user", "content": "draw me a bar chart of total orders based on different product"},
@@ -117,34 +157,28 @@ def chatWithLlama3(UUID, message):
         "input: draw me a bar chart of total orders based on different product",
         "output: ```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\norder_details_df = pd.read_csv(\"C:\\\\Users\\\\Tomta\\\\Desktop\\\\AIDashboard\\\\aidashboard\\\\backend\\\\TrainingTable\\\\OrderDetails.csv\")\n\n# Calculate total sales per product\norder_details_df['TotalSales'] = order_details_df['Quantity'] * order_details_df['UnitPrice']\nproduct_sales = order_details_df.groupby('ProductID')['TotalSales'].sum().reset_index()\n\n# Plot the total sales\nplt.figure(figsize=(10, 6))\nplt.bar(product_sales['ProductID'].astype(str), product_sales['TotalSales'], color='skyblue')\nplt.xlabel('Product ID')\nplt.ylabel('Total Sales')\nplt.title('Total Sales by Product')\nplt.xticks(rotation=45)\nplt.tight_layout()\nplt.savefig('chart.png')\n```",
     ]
+    
+    # chat = model.start_chat(history=msgs)
 
-    # output = ollama.chat(
-    #     model='llama3',
-    #     messages = msgs,
-    #     stream=True,
-    # )
+    # response = chat.send_message(message)
 
-    prompt = f"""Here is the history of the correct version of code that you should provide: {msgsInGenerateContent}.
-    This is the system instruction you should follow: {getSystemPrompt()}.
+    prompt = f"""Here is the history of the correct version of code that you should provide: {msgsInGenerateContent}
     Here is the question that you should provide the code: {message}
     """
 
-    output = ollama.generate(
-        model='llama3',
-        prompt = prompt,
-        # system= getSystemPrompt(),
-        stream=True,
-    )
+    response = model.generate_content(prompt, stream=True)
 
-    response = ""
+    result = "".join([str(chunk.text) for chunk in response])
+    
+    # print("Result: ", result)
 
-    for chunk in output:
-        print(chunk['response'], end='', flush=True)
-        response += chunk['response']
-        if(chunk['done'] ==True):
-            toWriteContext = context + chunk['context']   
+    # response = model.generate_content(response['message']['content'], stream=True)
 
-    tr.transformResponse(response)
+    # for chunk in output:
+    #     print(chunk['message']['content'], end='', flush=True)
+    #     response += chunk['message']['content']
+
+    tr.transformResponse(result)
 
     time.sleep(5)# wait for the image to be generated
 
@@ -160,22 +194,8 @@ def chatWithLlama3(UUID, message):
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
         data = json.load(file) 
         data["history"].append(toStoreJson)
-        data["context"] = toWriteContext
+        # data["context"] = toWriteContext
 
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
-    return response, encodedImage
-
-#Keep the response as a python seperate file since the response will be a python runnale code
-#All the code generated by the AI should be store in a seperate folder, where the folder name should be the UniqueID from user
-#Each user folder should be stored in a master folder to keep neat and tidy
-
-#Process will be like:
-#1. User send a message to the AI
-#2. AI will generate a response
-#3. System will store the response in a python file
-#4. To use the python file to show the visualization, user should provide a name to label the python file, which is the visualization
-
-#Therefore, there should be having a user json file to store each python file name and their title
-#Sturcture of the json file:
-#{ "UniqueID": "123ABC","Visualization": [{"Visualization": "Title1", FileName:"oaijewf.py"}, {"Visualization": "Title2", FileName:"iuhgieaf.py"}]}
+    return result, encodedImage
