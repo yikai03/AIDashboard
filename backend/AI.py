@@ -46,7 +46,7 @@ def getSystemPrompt():
     # print(arr)
 
     systemContext = f"""
-    1. You are a data visualization expertise which done perfect code for visualization in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provides code. Start the code by importing the necessary library. Then, read the csv file into pandas DataFrame. Group the data based on the requirement, show the visualization, save the visualization as image with a name of chart.png and show the image.
+    1. You are a data visualization expertise which done perfect code for visualization in python. You are now providing only code for a client who may ask question based on the data that you are train on. You should only provides code. Start the code by importing the necessary library. Then, read the csv file into pandas DataFrame. Group the data based on the requirement, save the visualization as image with a name of chart.png and show the image.
     2. Your system has {len(files)} files. 
     3. The files are {fileNames}. 
     4. Each files have different columns. Here are the columns in each file. {arr} 
@@ -89,6 +89,9 @@ def getUserMessage(UUID, message):
     return response, encodedImage
     
 def chatWithLlama3(UUID, message):
+    with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
+        data = json.load(file) 
+        context = data["context"]
     
     # output = ollama.generate(
     #     model='llama3',
@@ -107,17 +110,39 @@ def chatWithLlama3(UUID, message):
         {"role": "user", "content": message},
     ]
 
-    output = ollama.chat(
+    msgsInGenerateContent=[
+        # {"role": "system", "content": getSystemPrompt()},
+        "input: draw me a bar chart of total orders based on customer id",
+        "output: ```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\norders_df = pd.read_csv(\"C:\\\\Users\\\\Tomta\\\\Desktop\\\\AIDashboard\\\\aidashboard\\\\backend\\\\TrainingTable\\\\Orders.csv\")\ntotal_orders = orders_df.groupby('CustomerID')['OrderID'].count().reset_index(name='Total Orders')\n\nplt.bar(total_orders['CustomerID'], total_orders['Total Orders'])\nplt.xlabel('Customer ID')\nplt.ylabel('Total Orders')\nplt.title('Total Orders by Customer ID')\nplt.savefig('chart.png')\n```",
+        "input: draw me a bar chart of total orders based on different product",
+        "output: ```\nimport pandas as pd\nimport matplotlib.pyplot as plt\n\norder_details_df = pd.read_csv(\"C:\\\\Users\\\\Tomta\\\\Desktop\\\\AIDashboard\\\\aidashboard\\\\backend\\\\TrainingTable\\\\OrderDetails.csv\")\n\n# Calculate total sales per product\norder_details_df['TotalSales'] = order_details_df['Quantity'] * order_details_df['UnitPrice']\nproduct_sales = order_details_df.groupby('ProductID')['TotalSales'].sum().reset_index()\n\n# Plot the total sales\nplt.figure(figsize=(10, 6))\nplt.bar(product_sales['ProductID'].astype(str), product_sales['TotalSales'], color='skyblue')\nplt.xlabel('Product ID')\nplt.ylabel('Total Sales')\nplt.title('Total Sales by Product')\nplt.xticks(rotation=45)\nplt.tight_layout()\nplt.savefig('chart.png')\n```",
+    ]
+
+    # output = ollama.chat(
+    #     model='llama3',
+    #     messages = msgs,
+    #     stream=True,
+    # )
+
+    prompt = f"""Here is the history of the correct version of code that you should provide: {msgsInGenerateContent}.
+    This is the system instruction you should follow: {getSystemPrompt()}.
+    Here is the question that you should provide the code: {message}
+    """
+
+    output = ollama.generate(
         model='llama3',
-        messages = msgs,
+        prompt = prompt,
+        # system= getSystemPrompt(),
         stream=True,
     )
 
     response = ""
 
     for chunk in output:
-        print(chunk['message']['content'], end='', flush=True)
-        response += chunk['message']['content']
+        print(chunk['response'], end='', flush=True)
+        response += chunk['response']
+        if(chunk['done'] ==True):
+            toWriteContext = context + chunk['context']   
 
     tr.transformResponse(response)
 
@@ -135,7 +160,7 @@ def chatWithLlama3(UUID, message):
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "r") as file:
         data = json.load(file) 
         data["history"].append(toStoreJson)
-        # data["context"] = toWriteContext
+        data["context"] = toWriteContext
 
     with open(os.path.join(folderPathForHistory, f"{UUID}.json"), "w") as file:
         json.dump(data, file, indent=4)
