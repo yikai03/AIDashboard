@@ -37,7 +37,7 @@
             "Table": "Products",
             "ConnectionStatus": "Test",
             "Description": "",
-            "ToTrain": "No"
+            "ToTrain": "Yes"
         },
         {
             "ConnectionID": "YMm509",

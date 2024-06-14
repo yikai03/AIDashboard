@@ -318,14 +318,14 @@ class ChatbotMessage(BaseModel):
 @app.post("/chatbot")
 async def messageWithAI(chatbot: ChatbotMessage):
     response, encodedImage = AI.getUserMessage(UniqueUserID, chatbot.message)
-    print("_"*100)
+    # print("_"*100)
     print(response)
     return response, encodedImage
 
 @app.get("/chatbot")
 async def getChatbot():
     history = getUserHistoryMessageWithAI()
-    print(history)
+    # print(history)
     return history
 
 #User can select different dataset to train the AI

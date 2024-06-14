@@ -1,17 +1,16 @@
 import pandas as pd
 import matplotlib.pyplot as plt
 
-orders_df = pd.read_csv("C:\\Users\\Tomta\\Desktop\\AIDashboard\\aidashboard\\backend\\TableStorage\\Orders.csv")
+order_details_df = pd.read_csv("C:\\Users\\Tomta\\Desktop\\AIDashboard_2\\AIDashboard\\backend\\TrainingTable\\OrderDetails.csv")
+order_details_df['TotalSales'] = order_details_df['Quantity'] * order_details_df['UnitPrice']
 
-# Calculate the total order amount for each customer
-customer_orders = orders_df.groupby('CustomerID')['TotalAmount'].sum().reset_index(name='Total Order Amount')
+total_sales_by_orderdate = order_details_df.groupby('OrderDate')['TotalSales'].sum().reset_index(name='Total Sales')
 
-# Plot the total order amounts
 plt.figure(figsize=(10, 6))
-plt.bar(customer_orders['CustomerID'], customer_orders['Total Order Amount'], color='lightcoral')
-plt.xlabel('Customer ID')
-plt.ylabel('Total Order Amount')
-plt.title('Total Order Amount by Customer')
+plt.bar(total_sales_by_orderdate['OrderDate'], total_sales_by_orderdate['Total Sales'], color='skyblue')
+plt.xlabel('Order Date')
+plt.ylabel('Total Sales')
+plt.title('Total Sales by Order Date')
 plt.xticks(rotation=45)
 plt.tight_layout()
 plt.savefig('chart.png')
