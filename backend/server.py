@@ -133,7 +133,7 @@ def getUserHistoryMessageWithAI():
             with open(os.path.join(folderPath, filename), "r") as file:
                 userInfo = json.load(file)                
                 if userInfo["id"] == UniqueUserID:
-                    print(userInfo["history"])
+                    # print(userInfo["history"])
                     return userInfo["history"]
     return None
 
@@ -325,7 +325,7 @@ async def messageWithAI(chatbot: ChatbotMessage):
 @app.get("/chatbot")
 async def getChatbot():
     history = getUserHistoryMessageWithAI()
-    print(history)
+    # print(history)
     return history
 
 #User can select different dataset to train the AI
