@@ -29,7 +29,7 @@ app.add_middleware(
 
 @app.get("/")
 def read_root():
-    return {"Hello": "World"}
+    return {"Welcome to": "Ollama version"}
 
 global UniqueUserID
 UniqueUserID = ""
@@ -133,7 +133,7 @@ def getUserHistoryMessageWithAI():
             with open(os.path.join(folderPath, filename), "r") as file:
                 userInfo = json.load(file)                
                 if userInfo["id"] == UniqueUserID:
-                    print(userInfo["history"])
+                    # print(userInfo["history"])
                     return userInfo["history"]
     return None
 
