@@ -12,13 +12,6 @@
 1. cd ./frontend
 2. npm install
 
-## Gemini API Key
-1. go to https://aistudio.google.com/app/apikey
-2. create an API key
-3. create a .env file in backend folder
-4. enter GENAI_API_KEY = <Your API key>
-5. ensure the .gitignore file have .env written
-
 # Starting System
 ## Backend
 1. cd ./backend
