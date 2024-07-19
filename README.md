@@ -1,4 +1,8 @@
 # System Setup
+## SQL Setup
+1. open SSMS
+2. run the server query
+
 ## Backend
 1. cd 'to/your/path'
 2. git clone https://github.com/yikai03/AIDashboard.git
