@@ -150,7 +150,50 @@ def chatWithGemini(UUID, message): #Function to chat with Gemini
 
     result = "".join([str(chunk.text) for chunk in response]) #Join the chunks of the response to get the result
 
-    tr.transformResponse(result) #Transform the response
+    syntaxErrorCheckingResult, nothingError, nothingFatal, runtimeError = tr.transformResponse(result) #Transform the response
+
+    while(nothingError == "Error found" or nothingFatal == "Fatal found" or runtimeError != "No runtime errors"): # If error exists, passed the error to the AI to reprompt
+        print("There is an error in the code") # Print the error message
+        print("Here is the error code: ", response) # Print the error code
+        syntaxError = "" # Initialize the syntax error
+        syntaxFatal = "" # Initialize the syntax fatal
+        runtimeErrorText = "" # Initialize the runtime error text
+        if(syntaxErrorCheckingResult['Error'] != []): # Check if there are any errors
+            for error in syntaxErrorCheckingResult['Error']: # Loop through the errors in syntax error checking result
+                syntaxError += error # Append the error to the syntax error
+        else:
+            syntaxError = None # Set the syntax error to None
+        
+        if(syntaxErrorCheckingResult['Fatal'] != []): # Check if there are any fatal
+            for fatal in syntaxErrorCheckingResult['Fatal']: # Loop through the fatals in syntax error checking result
+                syntaxFatal += fatal # Append the fatal to the syntax fatal
+        else: 
+            syntaxFatal = None # Set the syntax fatal to None
+
+        if(runtimeError != "No runtime errors"): # Check if there are any runtime errors
+            runtimeErrorText = runtimeError # Set the runtime error text to the runtime error
+        else: # If there are no runtime errors
+            runtimeErrorText = None # Set the runtime error text to None
+
+        print("Syntax Error: ", syntaxError, '\n') # Print the syntax error
+        print("Syntax Fatal: ", syntaxFatal, '\n') # Print the syntax fatal
+        print("Runtime Error: ", runtimeErrorText, '\n') # Print the runtime error
+
+        prompt = f""" 
+        The code that you provided is having error. Here are the errors: 
+        Syntax Error: {syntaxError}
+        Syntax Fatal: {syntaxFatal}
+        Runtime Error: {runtimeErrorText}
+        Here are the history of the correct version of code that you should provide: {msgsInGenerateContent}
+        Here is the question that you should provide the code: {message}
+        Please provide the correct code based on the system instruction.
+        """ # Change the prompt to reprompt request
+
+        response = model.generate_content(prompt, stream=True) #Generate the content with the prompt and store the output in the response
+
+        result = "".join([str(chunk.text) for chunk in response]) #Join the chunks of the response to get the result
+
+        syntaxErrorCheckingResult, nothingError, nothingFatal, runtimeError = tr.transformResponse(result) #Transform the response
 
     time.sleep(5)# wait for the image to be generated
 
